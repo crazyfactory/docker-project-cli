@@ -4,7 +4,6 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "xo && ava",
-    "ava": "ava",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "bin": {

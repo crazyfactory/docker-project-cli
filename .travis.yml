@@ -8,5 +8,14 @@ cache:
   - node_modules
   - /usr/local/lib/node_modules
 
+before_install:
+  - npm install -g greenkeeper-lockfile
+
+before_script:
+  - greenkeeper-lockfile-update
+
+after_script:
+  - greenkeeper-lockfile-upload
+
 after_success:
   - npm run semantic-release
