@@ -4,7 +4,10 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "xo && ava",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "precommit": "xo",
+    "commitmsg": "validate-commit-msg",
+    "prepush": "ava"
   },
   "bin": {
     "dopr": "./bin/index.js"
@@ -30,7 +33,9 @@
   "devDependencies": {
     "ava": "^0.19.1",
     "babel-preset-env": "^1.5.2",
+    "husky": "^0.13.4",
     "semantic-release": "^6.3.6",
+    "validate-commit-msg": "^2.12.2",
     "xo": "^0.18.2"
   },
   "xo": {
