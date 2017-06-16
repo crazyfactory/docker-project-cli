@@ -96,7 +96,7 @@ or so
 Using the configuration you can add your own commands. If you want to use `yarn` for instance, simply add it
 ```json
 {
-  "commands": [
+  "action": [
     "yarn"
   ]
 }
@@ -105,7 +105,7 @@ Using the configuration you can add your own commands. If you want to use `yarn`
 You can also specify a different service if required. So you can add shortcuts for other docker instances like mysql as well.
 ```json
 {
-  "commands": [
+  "action": [
     {
       "key": "mysql",
       "service": "mysql-service"

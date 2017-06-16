@@ -72,7 +72,11 @@ const defaultAction = {
     file: program.file || config.file || null,
     service: program.service || config.service || null,
     command: config.command || '%action% %args%',
-    exec: true
+    user: null,
+    privileged: false,
+    exec: true,
+    detached: false,
+    index: null
 };
 
 // Final action
@@ -88,7 +92,7 @@ if (!fileExists(dockerComposeFile)) {
     console.log(chalk.red('docker-compose file not found at: ' + dockerComposeFile));
     process.exit(1);
 }
-if (!cliAction.service) {
+if (cliAction.exec && !cliAction.service) {
     console.log(chalk.red('\'service\' not configured.'));
     process.exit(1);
 }
