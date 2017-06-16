@@ -1,0 +1,29 @@
+{
+  "file": "./docker/docker-compose.yml",
+  "service": null,
+  "exec": true,
+  "actions": {
+    "down": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "up": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "start": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "stop": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "bash": "%action% %args%",
+    "composer": "%action% %args%",
+    "node": "%action% %args%",
+    "npm": "%action% %args%",
+    "git": "%action% %args%",
+    "yarn": "%action% %args%"
+  }
+}
