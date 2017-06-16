@@ -21,8 +21,14 @@
     },
     "bash": "%action% %args%",
     "composer": "%action% %args%",
-    "node": "%action% %args%",
-    "npm": "%action% %args%",
+    "node": {
+      "command": "%action% %args%",
+      "user": "node"
+    },
+    "npm": {
+      "command": "%action% %args%",
+      "user": "node"
+    },
     "git": "%action% %args%",
     "yarn": "%action% %args%"
   }

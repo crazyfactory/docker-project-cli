@@ -27,29 +27,44 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 Default configuration
 ```json
 {
-  "file": "./docker/docker-compose.yml", // the docker compose yml file to be used
-  "service": "php-fpm", // the default service for all commands, can be overwritten for each command
-  "command": "php ./src/cli.php %params%", // the default command if no match is found
+  "file": "./docker/docker-compose.yml",
+  "service": null,
+  "exec": true,
   "actions": {
-    "bash": {},
-    "composer": {}, 
-    "npm": {}, 
-    "git": {}, 
-    "yarn": {}
-  },
-  "environments": {
-    "staging": "./docker/docker-compose.staging.yml",
-    "production": {
-      "file": "./docker/docker-compose.prod.yml" // use a different configuration file
-    }
+    "down": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "up": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "start": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "stop": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "bash": "%action% %args%",
+    "composer": "%action% %args%",
+    "node": {
+      "command": "%action% %args%",
+      "user": "node"
+    },
+    "npm": "%action% %args%",
+    "git": "%action% %args%",
+    "yarn": "%action% %args%"
   }
 }
 ```
 
 Notes:
-- This will relay `up`, `down` and `stop` to `docker-compose -f <file> $params$`
-- This will add 3 custom commands for `dopr bash ...`, `dopr composer ...` and `dopr optimize`
-- This will use a different config if DOPR_ENV is set to *production* or if the first argument matches.
+- This will relay `up`, `down`, `start` and `stop` to `docker-compose -f <file> $params$`
+- This will add custom commands like `dopr bash ...`, `dopr composer ...` and `dopr optimize`
+- The `node` will be launched with the user `node` by default.
+- This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
 
 ## Usage
 
