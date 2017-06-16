@@ -30,21 +30,14 @@ Default configuration
   "file": "./docker/docker-compose.yml", // the docker compose yml file to be used
   "service": "php-fpm", // the default service for all commands, can be overwritten for each command
   "command": "php ./src/cli.php %params%", // the default command if no match is found
-
-  "actions": 
-    "bash", 
-    "composer", 
-    "npm", 
-    "git", 
-    { 
-      "key": "yarn" 
-    }, 
-    { 
-      "key": "test", 
-      "cmd": "npm %params%" 
-    }
-  ],
-  "env": {
+  "actions": {
+    "bash": {},
+    "composer": {}, 
+    "npm": {}, 
+    "git": {}, 
+    "yarn": {}
+  },
+  "environments": {
     "staging": "./docker/docker-compose.staging.yml",
     "production": {
       "file": "./docker/docker-compose.prod.yml" // use a different configuration file

@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+const fs = require('fs');
 
 function preprocessArgs(args) {
     let lastNeedsValue = false;
@@ -81,7 +81,13 @@ function parseConfig(config = {}) {
     // Transform nested actions as well
     if (config.env) {
         Object.keys(config.env).forEach(key => {
-            if (typeof config.env[key].actions === 'object') {
+            if (typeof config.env[key] === 'string') {
+                // File shorthands are converted to objects
+                config.env[key] = {
+                    file: config.env[key]
+                };
+            } else if (typeof config.env[key].actions === 'object') {
+                // Proper objects have their actions parsed
                 config.env[key].actions = parseConfigActions(config.env[key].actions);
             }
         });
