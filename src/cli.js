@@ -69,18 +69,27 @@ const config = deepAssign({}, mergedConfig, environmentConfig);
 
 // Default action
 const defaultAction = {
-    file: program.file || config.file || null,
-    service: program.service || config.service || null,
+    file: config.file || null,
+    service: config.service || null,
     command: config.command || '%action% %args%',
-    user: null,
-    privileged: false,
+    user: config.user || null,
+    privileged: config.privileged || false,
     exec: true,
     detached: false,
     index: null
 };
 
+// Program action
+const programAction = {};
+['detached', 'exec', 'file', 'index', 'privileged', 'service', 'user'].forEach(key => {
+    if (program[key] !== undefined) {
+        programAction[key] = program[key];
+    }
+});
+
 // Final action
-const cliAction = Object.assign({}, defaultAction, (config.actions && config.actions[action]) || {});
+const configAction = (config.actions && config.actions[action]) || {};
+const cliAction = Object.assign({}, defaultAction, configAction, programAction);
 const dockerComposeFile = path.resolve(cliAction.file);
 
 // Validation
@@ -103,22 +112,16 @@ const cliCommand = cliAction.command
     .replace('%args%', args.join(' '))
     .split(' ');
 
-// Determine docker-compose arguments
-const cliUser = program.user || (cliAction.user && program.user !== null);
-const cliPrivileged = program.privileged || (cliAction.privileged && program.privileged !== false);
-const cliDetached = program.detached || (program.detached !== false);
-
 // Args
 const cliArgs = ['-f', dockerComposeFile]
     .concat(cliAction.exec ? ['exec', cliAction.service] : [])
-    .concat(cliDetached ? ['-d'] : [])
-    .concat(cliPrivileged ? ['--privileged'] : [])
-    .concat(cliUser ? ['--user', cliUser] : [])
-    .concat(program.index ? ['--index', program.index] : [])
+    .concat(cliAction.detached ? ['-d'] : [])
+    .concat(cliAction.privileged ? ['--privileged'] : [])
+    .concat(cliAction.user ? ['--user', cliAction.user] : [])
+    .concat(cliAction.index ? ['--index', cliAction.index] : [])
     .concat(cliCommand);
 
 if (program.verbose) {
-    console.log(chalk.gray('ENV: ' + env));
     console.log(chalk.gray('ENV: ' + env));
     console.log(chalk.gray('CWD: ' + basePath));
     console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
