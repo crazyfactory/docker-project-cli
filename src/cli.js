@@ -128,7 +128,8 @@ if (program.verbose) {
 const childProcess = spawn('docker-compose', cliArgs, {
     cwd: basePath,
     env,
-    stdio: 'inherit'
+    stdio: 'inherit',
+    shell: true
 });
 
 childProcess.on('close', code => {
