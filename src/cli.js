@@ -36,7 +36,7 @@ program
 
 // Set defaults
 const basePath = program.path || process.cwd();
-const env = program.env || process.environment || 'development';
+const env = program.env || process.env.NODE_ENV || 'development';
 
 // Try to find package json
 const packageFile = path.resolve(basePath + '/package.json');
