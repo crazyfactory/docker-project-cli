@@ -31,7 +31,7 @@
     "update-notifier": "^2.2.0"
   },
   "devDependencies": {
-    "ava": "^0.19.1",
+    "ava": "^0.20.0",
     "babel-preset-env": "^1.5.2",
     "husky": "^0.14.0",
     "semantic-release": "^6.3.6",
