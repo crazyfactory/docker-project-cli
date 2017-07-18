@@ -11,6 +11,10 @@
       "command": "%action% %args%",
       "exec": false
     },
+    "pull": {
+      "command": "%action% %args%",
+      "exec": false
+    },
     "start": {
       "command": "%action% %args%",
       "exec": false
