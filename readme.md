@@ -22,7 +22,7 @@ Optionally install it locally, to pin down versions if required.
 
 ## Configuration
  
-Configuration of DOPR can be done either via `package.json` under the `dopr` key or with a provided file defaulting to `.dopr.json`.
+Configuration of DOPR can be done either via `package.json` under the `dopr` key or with a provided file defaulting to `docker-project.json`.
 
 Default configuration
 ```json
