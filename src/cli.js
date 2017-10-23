@@ -113,11 +113,12 @@ const cliCommand = cliAction.command
     .split(' ');
 
 // Args
+const user = cliAction.user ? ['--user', cliAction.user] : [];
+
 const cliArgs = ['-f', dockerComposeFile]
-    .concat(cliAction.exec ? ['exec', cliAction.service] : [])
+    .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
     .concat(cliAction.detached ? ['-d'] : [])
     .concat(cliAction.privileged ? ['--privileged'] : [])
-    .concat(cliAction.user ? ['--user', cliAction.user] : [])
     .concat(cliAction.index ? ['--index', cliAction.index] : [])
     .concat(cliCommand);
 
