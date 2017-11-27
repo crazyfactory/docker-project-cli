@@ -90,12 +90,16 @@ const programAction = {};
 // Final action
 const configAction = (config.actions && config.actions[action]) || {};
 const cliAction = Object.assign({}, defaultAction, configAction, programAction);
-const dockerComposeFile = path.resolve(cliAction.file);
+let dockerComposeFile = path.resolve(cliAction.file);
 
 // Validation
 if (!dockerComposeFile) {
     console.log(chalk.red('\'file\' not configured.'));
     process.exit(1);
+}
+// Relative to path argument.
+if (program.path && !fileExists(dockerComposeFile)) {
+    dockerComposeFile = path.join(program.path, cliAction.file);
 }
 if (!fileExists(dockerComposeFile)) {
     console.log(chalk.red('docker-compose file not found at: ' + dockerComposeFile));
