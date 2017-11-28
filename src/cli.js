@@ -64,6 +64,14 @@ if (!packageConfig && !doprConfig) {
     process.exit(1);
 }
 
+// Backward compat.
+if (typeof packageConfig.file === 'string') {
+    packageConfig.file = [packageConfig.file];
+}
+if (typeof doprConfig.file === 'string') {
+    doprConfig.file = [doprConfig.file];
+}
+
 // Construct configuration
 const mergedConfig = deepAssign({}, defaultConfig, packageConfig, doprConfig);
 const environmentConfig = (mergedConfig.environments && mergedConfig.environments[env]) || {};
