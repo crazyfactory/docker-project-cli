@@ -43,6 +43,7 @@ const packageFile = path.resolve(basePath + '/package.json');
 const doprFile = path.resolve(basePath + '/docker-project.json');
 const packageFileExists = fileExists(packageFile);
 const doprFileExists = fileExists(doprFile);
+
 if (!packageFileExists && !doprFileExists) {
     console.error(chalk.red('neither package.json nor docker-project.json found in: ' + basePath));
     console.log(chalk.gray('Run this tool from your projects root directory or supply a --path.'));
@@ -57,6 +58,7 @@ const doprConfigRaw = doprFileExists
     ? require(doprFile)
     : null;
 const doprConfig = parseConfig(doprConfigRaw && (doprConfigRaw.dopr || doprConfigRaw));
+
 if (!packageConfig && !doprConfig) {
     console.log(chalk.red('dopr is not configured.'));
     process.exit(1);
