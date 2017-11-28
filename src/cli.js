@@ -101,25 +101,34 @@ const programAction = {};
 // Final action
 const configAction = (config.actions && config.actions[action]) || {};
 const cliAction = Object.assign({}, defaultAction, configAction, programAction);
-let dockerComposeFile = path.resolve(cliAction.file);
 
 // Validation
-if (!dockerComposeFile) {
+if (cliAction.file.length === 0) {
     console.log(chalk.red('\'file\' not configured.'));
-    process.exit(1);
-}
-// Relative to path argument.
-if (program.path && !fileExists(dockerComposeFile)) {
-    dockerComposeFile = path.join(program.path, cliAction.file);
-}
-if (!fileExists(dockerComposeFile)) {
-    console.log(chalk.red('docker-compose file not found at: ' + dockerComposeFile));
     process.exit(1);
 }
 if (cliAction.exec && !cliAction.service) {
     console.log(chalk.red('\'service\' not configured.'));
     process.exit(1);
 }
+
+const dockerComposeFiles = [];
+
+cliAction.file.forEach((file, pos) => {
+    file = path.resolve(file);
+
+    // Relative to path argument.
+    if (program.path && !fileExists(file)) {
+        file = path.join(program.path, cliAction.file[pos]);
+    }
+
+    if (!fileExists(file)) {
+        console.log(chalk.red('docker-compose file not found at: ' + file));
+        process.exit(1);
+    }
+
+    dockerComposeFiles.push('--file', file);
+});
 
 // Parse command
 const cliCommand = cliAction.command
@@ -130,7 +139,7 @@ const cliCommand = cliAction.command
 // Args
 const user = cliAction.user ? ['--user', cliAction.user] : [];
 
-const cliArgs = ['-f', dockerComposeFile]
+const cliArgs = dockerComposeFiles
     .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
     .concat(cliAction.detached ? ['-d'] : [])
     .concat(cliAction.privileged ? ['--privileged'] : [])
