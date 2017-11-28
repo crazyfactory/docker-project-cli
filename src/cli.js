@@ -8,7 +8,7 @@ const deepAssign = require('deep-assign');
 const updateNotifier = require('update-notifier');
 
 const pkg = require('../package.json');
-const {preprocessArgs, fileExists, parseConfig} = require('./internals');
+const {preprocessArgs, fileExists, parseConfig, collect} = require('./internals');
 
 const defaultConfig = parseConfig(require('./defaultConfig.json'));
 
@@ -26,7 +26,7 @@ program
     .option('-e, --env <name>', 'Overrides the selected environment [default: development]')
     .option('-p, --path <path>', 'Path to you projects root folder, [default: CWD]')
     .option('-s, --service <name>', 'Overrides the targeted docker service')
-    .option('-f, --file <filepath>', 'Overrides the targeted docker-compose file')
+    .option('-f, --file [filepath ...]', 'Overrides the targeted docker-compose file(s)', collect, [])
     .option('-u, --user <user>', 'Run the command as this user')
     .option('-i, --index <index>', 'Index of the service is there are multiple [default: 1]')
     .option('-p, --privileged', 'Give extended privileges to the executed command process')
