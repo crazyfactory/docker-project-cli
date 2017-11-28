@@ -92,8 +92,9 @@ const defaultAction = {
 // Program action
 const programAction = {};
 ['detached', 'exec', 'file', 'index', 'privileged', 'service', 'user'].forEach(key => {
-    if (program[key] !== undefined) {
-        programAction[key] = program[key];
+    const value = program[key];
+    if (value !== undefined && (key !== 'file' || value.length > 0)) {
+        programAction[key] = value;
     }
 });
 
