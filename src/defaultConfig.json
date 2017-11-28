@@ -1,5 +1,5 @@
 {
-  "file": "./docker/docker-compose.yml",
+  "file": ["./docker/docker-compose.yml"],
   "service": null,
   "exec": true,
   "actions": {

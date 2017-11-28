@@ -96,9 +96,16 @@ function parseConfig(config = {}) {
     return config;
 }
 
+function collect(val, memo) {
+    memo.push(val);
+
+    return memo;
+}
+
 module.exports = {
     preprocessArgs,
     fileExists,
     parseConfigActions,
-    parseConfig
+    parseConfig,
+    collect
 };

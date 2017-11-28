@@ -8,7 +8,7 @@ const deepAssign = require('deep-assign');
 const updateNotifier = require('update-notifier');
 
 const pkg = require('../package.json');
-const {preprocessArgs, fileExists, parseConfig} = require('./internals');
+const {preprocessArgs, fileExists, parseConfig, collect} = require('./internals');
 
 const defaultConfig = parseConfig(require('./defaultConfig.json'));
 
@@ -24,11 +24,11 @@ const {dockerProjectArgs, args, action} = preprocessArgs(process.argv);
 program
     .version(pkg.version || 'dev')
     .option('-e, --env <name>', 'Overrides the selected environment [default: development]')
-    .option('-p, --path <path>', 'Path to you projects root folder, [default: CWD]')
+    .option('-p, --path <path>', 'Path to your projects root folder, [default: CWD]')
     .option('-s, --service <name>', 'Overrides the targeted docker service')
-    .option('-f, --file <filepath>', 'Overrides the targeted docker-compose file')
+    .option('-f, --file [filepath ...]', 'Overrides the targeted docker-compose file(s)', collect, [])
     .option('-u, --user <user>', 'Run the command as this user')
-    .option('-i, --index <index>', 'Index of the service is there are multiple [default: 1]')
+    .option('-i, --index <index>', 'Index of the service if there are multiple [default: 1]')
     .option('-p, --privileged', 'Give extended privileges to the executed command process')
     .option('-v, --verbose', 'Adds additional logging')
     .option('-d, --detached', 'Detached mode: Run command in the background.')
@@ -43,6 +43,7 @@ const packageFile = path.resolve(basePath + '/package.json');
 const doprFile = path.resolve(basePath + '/docker-project.json');
 const packageFileExists = fileExists(packageFile);
 const doprFileExists = fileExists(doprFile);
+
 if (!packageFileExists && !doprFileExists) {
     console.error(chalk.red('neither package.json nor docker-project.json found in: ' + basePath));
     console.log(chalk.gray('Run this tool from your projects root directory or supply a --path.'));
@@ -57,9 +58,18 @@ const doprConfigRaw = doprFileExists
     ? require(doprFile)
     : null;
 const doprConfig = parseConfig(doprConfigRaw && (doprConfigRaw.dopr || doprConfigRaw));
+
 if (!packageConfig && !doprConfig) {
     console.log(chalk.red('dopr is not configured.'));
     process.exit(1);
+}
+
+// Backward compat.
+if (typeof packageConfig.file === 'string') {
+    packageConfig.file = [packageConfig.file];
+}
+if (typeof doprConfig.file === 'string') {
+    doprConfig.file = [doprConfig.file];
 }
 
 // Construct configuration
@@ -82,33 +92,43 @@ const defaultAction = {
 // Program action
 const programAction = {};
 ['detached', 'exec', 'file', 'index', 'privileged', 'service', 'user'].forEach(key => {
-    if (program[key] !== undefined) {
-        programAction[key] = program[key];
+    const value = program[key];
+    if (value !== undefined && (key !== 'file' || value.length > 0)) {
+        programAction[key] = value;
     }
 });
 
 // Final action
 const configAction = (config.actions && config.actions[action]) || {};
 const cliAction = Object.assign({}, defaultAction, configAction, programAction);
-let dockerComposeFile = path.resolve(cliAction.file);
 
 // Validation
-if (!dockerComposeFile) {
+if (cliAction.file.length === 0) {
     console.log(chalk.red('\'file\' not configured.'));
-    process.exit(1);
-}
-// Relative to path argument.
-if (program.path && !fileExists(dockerComposeFile)) {
-    dockerComposeFile = path.join(program.path, cliAction.file);
-}
-if (!fileExists(dockerComposeFile)) {
-    console.log(chalk.red('docker-compose file not found at: ' + dockerComposeFile));
     process.exit(1);
 }
 if (cliAction.exec && !cliAction.service) {
     console.log(chalk.red('\'service\' not configured.'));
     process.exit(1);
 }
+
+const dockerComposeFiles = [];
+
+cliAction.file.forEach((file, pos) => {
+    file = path.resolve(file);
+
+    // Relative to path argument.
+    if (program.path && !fileExists(file)) {
+        file = path.join(program.path, cliAction.file[pos]);
+    }
+
+    if (!fileExists(file)) {
+        console.log(chalk.red('docker-compose file not found at: ' + file));
+        process.exit(1);
+    }
+
+    dockerComposeFiles.push('--file', file);
+});
 
 // Parse command
 const cliCommand = cliAction.command
@@ -119,7 +139,7 @@ const cliCommand = cliAction.command
 // Args
 const user = cliAction.user ? ['--user', cliAction.user] : [];
 
-const cliArgs = ['-f', dockerComposeFile]
+const cliArgs = dockerComposeFiles
     .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
     .concat(cliAction.detached ? ['-d'] : [])
     .concat(cliAction.privileged ? ['--privileged'] : [])
