@@ -28,7 +28,7 @@ program
     .option('-s, --service <name>', 'Overrides the targeted docker service')
     .option('-f, --file [filepath ...]', 'Overrides the targeted docker-compose file(s)', collect, [])
     .option('-u, --user <user>', 'Run the command as this user')
-    .option('-i, --index <index>', 'Index of the service is there are multiple [default: 1]')
+    .option('-i, --index <index>', 'Index of the service if there are multiple [default: 1]')
     .option('-p, --privileged', 'Give extended privileges to the executed command process')
     .option('-v, --verbose', 'Adds additional logging')
     .option('-d, --detached', 'Detached mode: Run command in the background.')
