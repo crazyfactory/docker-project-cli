@@ -24,7 +24,7 @@ const {dockerProjectArgs, args, action} = preprocessArgs(process.argv);
 program
     .version(pkg.version || 'dev')
     .option('-e, --env <name>', 'Overrides the selected environment [default: development]')
-    .option('-p, --path <path>', 'Path to you projects root folder, [default: CWD]')
+    .option('-p, --path <path>', 'Path to your projects root folder, [default: CWD]')
     .option('-s, --service <name>', 'Overrides the targeted docker service')
     .option('-f, --file [filepath ...]', 'Overrides the targeted docker-compose file(s)', collect, [])
     .option('-u, --user <user>', 'Run the command as this user')
