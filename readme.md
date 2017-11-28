@@ -27,7 +27,7 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 Default configuration
 ```json
 {
-  "file": "./docker/docker-compose.yml",
+  "file": ["./docker/docker-compose.yml"],
   "service": null,
   "exec": true,
   "actions": {
@@ -65,6 +65,7 @@ Notes:
 - This will add custom commands like `dopr bash ...`, `dopr composer ...` and `dopr optimize`
 - The `node` will be launched with the user `node` by default.
 - This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
+- The `"file"` value can be array or string.
 
 ## Usage
 
