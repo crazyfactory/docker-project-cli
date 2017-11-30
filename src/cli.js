@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const {spawnSync} = require('child_process');
+const {execSync, spawnSync} = require('child_process');
 const program = require('commander');
 const chalk = require('chalk');
 const deepAssign = require('deep-assign');
@@ -169,6 +169,11 @@ cliAction.command.forEach(command => {
 
         // Fire!
         return exitHandler(spawnSync('dopr ', refArgs, cliOptions).status);
+    }
+
+    // Command is expected to run in host context!
+    if (cliAction.service === '@host') {
+        return execSync(command, cliOptions);
     }
 
     // Parse command
