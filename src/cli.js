@@ -114,6 +114,7 @@ if (cliAction.exec && !cliAction.service) {
 
 const dockerComposeFiles = [];
 
+// Run commands synchronously one after another!
 cliAction.file.forEach((file, pos) => {
     file = path.resolve(file);
 
