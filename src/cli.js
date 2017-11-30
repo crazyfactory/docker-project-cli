@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const {spawn} = require('child_process');
+const {spawnSync} = require('child_process');
 const program = require('commander');
 const chalk = require('chalk');
 const deepAssign = require('deep-assign');
@@ -152,29 +152,44 @@ const exitHandler = code => {
     }
 };
 
-// Parse command
-const cliCommand = cliAction.command
-    .replace('%action%', action || '')
-    .replace('%args%', args.join(' '))
-    .split(' ');
+cliAction.command.forEach(command => {
+    if (program.verbose) {
+        console.log(chalk.gray('ENV: ' + env));
+        console.log(chalk.gray('CWD: ' + basePath));
+    }
 
-// Args
-const user = cliAction.user ? ['--user', cliAction.user] : [];
+    // Is it a reference to another action?
+    if (command[0] === '@') {
+        const refArgs = dockerProjectArgs.slice(2).concat(command.substr(1));
 
-const cliArgs = dockerComposeFiles
-    .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
-    .concat(cliAction.detached ? ['-d'] : [])
-    .concat(cliAction.privileged ? ['--privileged'] : [])
-    .concat(cliAction.index ? ['--index', cliAction.index] : [])
-    .concat(cliCommand);
+        if (program.verbose) {
+            console.log(chalk.gray('CMD: dopr ' + refArgs.join(' ')));
+        }
 
-if (program.verbose) {
-    console.log(chalk.gray('ENV: ' + env));
-    console.log(chalk.gray('CWD: ' + basePath));
-    console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
-}
+        // Fire!
+        return exitHandler(spawnSync('dopr ', refArgs, cliOptions).status);
+    }
 
-// Fire!
-const childProcess = spawn('docker-compose', cliArgs, cliOptions);
+    // Parse command
+    const cliCommand = command
+        .replace('%action%', action || '')
+        .replace('%args%', args.join(' '))
+        .split(' ');
 
-childProcess.on('close', exitHandler);
+    // Args
+    const user = cliAction.user ? ['--user', cliAction.user] : [];
+
+    const cliArgs = dockerComposeFiles
+        .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
+        .concat(cliAction.detached ? ['-d'] : [])
+        .concat(cliAction.privileged ? ['--privileged'] : [])
+        .concat(cliAction.index ? ['--index', cliAction.index] : [])
+        .concat(cliCommand);
+
+    if (program.verbose) {
+        console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
+    }
+
+    // Fire!
+    exitHandler(spawnSync('docker-compose', cliArgs, cliOptions).status);
+});
