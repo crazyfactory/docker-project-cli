@@ -64,6 +64,10 @@ Default configuration
     },
     "deepnested-cmd": {
       "command": ["echo deep nested command %args%"]
+    },
+    "host-cmd": {
+      "service": "@host",
+      "command": "docker-compose version"
     }
   }
 }
@@ -77,6 +81,7 @@ Notes:
 - The `"file"` value can be array or string.
 - The `"actions"[\d]."command"` can be either array or string.
 - The command can be reused or recalled by prefixing it with `@` (see sample above).
+- The command that should run in host context will need `"service"` value of `"@host"` (see sample above).
 
 ## Usage
 
