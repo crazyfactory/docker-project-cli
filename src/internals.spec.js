@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import {preprocessArgs, parseConfigActions, parseConfig} from './internals';
+import {preprocessArgs, parseConfigActions, parseConfig, collect} from './internals';
 
 test('preprocessArgs() with empty array', t => {
     t.deepEqual(preprocessArgs(['node.exe', 'cli.js']), {
@@ -144,4 +144,11 @@ test('parseConfig()', t => {
     };
 
     t.deepEqual(parseConfig(config), expected);
+});
+
+test('collect()', t => {
+    const memo = [];
+
+    t.deepEqual(collect(1, memo), [1]);
+    t.deepEqual(collect('a', memo), [1, 'a']);
 });
