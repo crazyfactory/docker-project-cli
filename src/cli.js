@@ -68,7 +68,7 @@ if (!packageConfig && !doprConfig) {
 if (typeof packageConfig.file === 'string') {
     packageConfig.file = [packageConfig.file];
 }
-if (typeof doprConfig.file === 'string') {
+if (doprConfig && typeof doprConfig.file === 'string') {
     doprConfig.file = [doprConfig.file];
 }
 
@@ -130,6 +130,28 @@ cliAction.file.forEach((file, pos) => {
     dockerComposeFiles.push('--file', file);
 });
 
+// Supporting array command so treat anything else as array as well.
+if (typeof cliAction.command === 'string') {
+    cliAction.command = [cliAction.command];
+}
+
+const cliOptions = {
+    cwd: basePath,
+    stdio: 'inherit',
+    shell: true
+};
+
+const exitHandler = code => {
+    if (program.verbose) {
+        console.log((code > 0 ? chalk.red : chalk.gray)(`command exited with code ${code}`));
+    }
+
+    // Pass through exit code
+    if (code !== 0) {
+        process.exit(code);
+    }
+};
+
 // Parse command
 const cliCommand = cliAction.command
     .replace('%action%', action || '')
@@ -153,18 +175,6 @@ if (program.verbose) {
 }
 
 // Fire!
-const childProcess = spawn('docker-compose', cliArgs, {
-    cwd: basePath,
-    env,
-    stdio: 'inherit',
-    shell: true
-});
+const childProcess = spawn('docker-compose', cliArgs, cliOptions);
 
-childProcess.on('close', code => {
-    if (program.verbose) {
-        console.log((code > 0 ? chalk.red : chalk.gray)(`command exited with code ${code}`));
-    }
-
-    // Pass through exit code
-    process.exit(code);
-});
+childProcess.on('close', exitHandler);
