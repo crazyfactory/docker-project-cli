@@ -48,14 +48,14 @@ Default configuration
       "exec": false
     },
     "bash": "%action% %args%",
-    "composer": "%action% %args%",
+    "composer": "composer %action% %args%",
     "node": {
-      "command": "%action% %args%",
+      "command": "node %action% %args%",
       "user": "node"
     },
-    "npm": "%action% %args%",
-    "git": "%action% %args%",
-    "yarn": "%action% %args%",
+    "npm": "npm %action% %args%",
+    "git": "git %action% %args%",
+    "yarn": "yarn %action% %args%",
     "multiple-cmd": {
       "command": ["echo multiple command as array", "@nested-cmd arg1 arg2"]
     },
