@@ -24,8 +24,7 @@ Optionally install it locally, to pin down versions if required.
 
 Configuration of DOPR can be done either via `package.json` under the `dopr` key or with a provided file defaulting to `docker-project.json`.
 
-Sample configuration (based on [default configuration](./src/defaulConfig.json)):
-
+**Default configuration:**
 ```json
 {
   "file": ["./docker/docker-compose.yml"],
@@ -37,6 +36,10 @@ Sample configuration (based on [default configuration](./src/defaulConfig.json))
       "exec": false
     },
     "up": {
+      "command": "%action% %args%",
+      "exec": false
+    },
+    "pull": {
       "command": "%action% %args%",
       "exec": false
     },
@@ -54,9 +57,28 @@ Sample configuration (based on [default configuration](./src/defaulConfig.json))
       "command": "%action% %args%",
       "user": "node"
     },
-    "npm": "%action% %args%",
+    "npm": {
+      "command": "%action% %args%",
+      "user": "node"
+    },
     "git": "%action% %args%",
-    "yarn": "%action% %args%",
+    "yarn": "%action% %args%"
+  }
+}
+```
+
+*Notes:*
+- This will relay `up`, `down`, `start` and `stop` to `docker-compose -f <file> $params$`
+- This will add custom commands like `dopr bash ...`, `dopr composer ...` and `dopr optimize`
+- The `node` will be launched with the user `node` by default.
+- This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
+- The `"file"` value can be array or string.
+
+**Sample configuration with all usecases:**
+
+```json
+{
+  "actions": {
     "multiple-cmd": {
       "command": ["echo multiple command as array", "@nested-cmd arg1 arg2"]
     },
@@ -74,13 +96,8 @@ Sample configuration (based on [default configuration](./src/defaulConfig.json))
 }
 ```
 
-Notes:
-- This will relay `up`, `down`, `start` and `stop` to `docker-compose -f <file> $params$`
-- This will add custom commands like `dopr bash ...`, `dopr composer ...` and `dopr optimize`
-- The `node` will be launched with the user `node` by default.
-- This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
-- The `"file"` value can be array or string.
-- The `"actions"[\d]."command"` can be either array or string.
+*Notes:*
+- The `"actions".[$key]."command"` can be either array or string.
 - The command can be reused or recalled by prefixing it with `@` (see sample above).
 - The command that should run in host context will need `"service"` value of `"@host"` (see sample above).
 
