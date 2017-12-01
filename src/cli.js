@@ -114,7 +114,7 @@ if (cliAction.exec && !cliAction.service) {
 
 const dockerComposeFiles = [];
 
-// Run commands synchronously one after another!
+// Validate/sanitize all docker-compose files!
 cliAction.file.forEach((file, pos) => {
     file = path.resolve(file);
 
@@ -153,6 +153,7 @@ const exitHandler = code => {
     }
 };
 
+// Run commands synchronously one after another!
 cliAction.command.forEach(command => {
     if (program.verbose) {
         console.log(chalk.gray('ENV: ' + env));
