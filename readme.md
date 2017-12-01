@@ -21,10 +21,11 @@ Optionally install it locally, to pin down versions if required.
 
 
 ## Configuration
- 
+
 Configuration of DOPR can be done either via `package.json` under the `dopr` key or with a provided file defaulting to `docker-project.json`.
 
-Default configuration
+Sample configuration (based on [default configuration](./src/defaulConfig.json)):
+
 ```json
 {
   "file": ["./docker/docker-compose.yml"],
@@ -48,14 +49,14 @@ Default configuration
       "exec": false
     },
     "bash": "%action% %args%",
-    "composer": "composer %action% %args%",
+    "composer": "%action% %args%",
     "node": {
-      "command": "node %action% %args%",
+      "command": "%action% %args%",
       "user": "node"
     },
-    "npm": "npm %action% %args%",
-    "git": "git %action% %args%",
-    "yarn": "yarn %action% %args%",
+    "npm": "%action% %args%",
+    "git": "%action% %args%",
+    "yarn": "%action% %args%",
     "multiple-cmd": {
       "command": ["echo multiple command as array", "@nested-cmd arg1 arg2"]
     },
