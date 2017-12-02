@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const {spawn} = require('child_process');
+const {execSync, spawnSync} = require('child_process');
 const program = require('commander');
 const chalk = require('chalk');
 const deepAssign = require('deep-assign');
@@ -68,7 +68,7 @@ if (!packageConfig && !doprConfig) {
 if (typeof packageConfig.file === 'string') {
     packageConfig.file = [packageConfig.file];
 }
-if (typeof doprConfig.file === 'string') {
+if (doprConfig && typeof doprConfig.file === 'string') {
     doprConfig.file = [doprConfig.file];
 }
 
@@ -114,6 +114,7 @@ if (cliAction.exec && !cliAction.service) {
 
 const dockerComposeFiles = [];
 
+// Validate/sanitize all docker-compose files!
 cliAction.file.forEach((file, pos) => {
     file = path.resolve(file);
 
@@ -130,41 +131,72 @@ cliAction.file.forEach((file, pos) => {
     dockerComposeFiles.push('--file', file);
 });
 
-// Parse command
-const cliCommand = cliAction.command
-    .replace('%action%', action || '')
-    .replace('%args%', args.join(' '))
-    .split(' ');
-
-// Args
-const user = cliAction.user ? ['--user', cliAction.user] : [];
-
-const cliArgs = dockerComposeFiles
-    .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
-    .concat(cliAction.detached ? ['-d'] : [])
-    .concat(cliAction.privileged ? ['--privileged'] : [])
-    .concat(cliAction.index ? ['--index', cliAction.index] : [])
-    .concat(cliCommand);
-
-if (program.verbose) {
-    console.log(chalk.gray('ENV: ' + env));
-    console.log(chalk.gray('CWD: ' + basePath));
-    console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
+// Supporting array command so treat anything else as array as well.
+if (typeof cliAction.command === 'string') {
+    cliAction.command = [cliAction.command];
 }
 
-// Fire!
-const childProcess = spawn('docker-compose', cliArgs, {
+const cliOptions = {
     cwd: basePath,
-    env,
     stdio: 'inherit',
     shell: true
-});
+};
 
-childProcess.on('close', code => {
+const exitHandler = code => {
     if (program.verbose) {
         console.log((code > 0 ? chalk.red : chalk.gray)(`command exited with code ${code}`));
     }
 
     // Pass through exit code
-    process.exit(code);
+    if (code !== 0) {
+        process.exit(code);
+    }
+};
+
+// Run commands synchronously one after another!
+cliAction.command.forEach(command => {
+    if (program.verbose) {
+        console.log(chalk.gray('ENV: ' + env));
+        console.log(chalk.gray('CWD: ' + basePath));
+    }
+
+    // Is it a reference to another action?
+    if (command[0] === '@') {
+        const refArgs = dockerProjectArgs.slice(2).concat(command.substr(1));
+
+        if (program.verbose) {
+            console.log(chalk.gray('CMD: dopr ' + refArgs.join(' ')));
+        }
+
+        // Fire!
+        return exitHandler(spawnSync('dopr ', refArgs, cliOptions).status);
+    }
+
+    // Command is expected to run in host context!
+    if (cliAction.service === '@host') {
+        return execSync(command, cliOptions);
+    }
+
+    // Parse command
+    const cliCommand = command
+        .replace('%action%', action || '')
+        .replace('%args%', args.join(' '))
+        .split(' ');
+
+    // Args
+    const user = cliAction.user ? ['--user', cliAction.user] : [];
+
+    const cliArgs = dockerComposeFiles
+        .concat(cliAction.exec ? ['exec', ...user, cliAction.service] : [])
+        .concat(cliAction.detached ? ['-d'] : [])
+        .concat(cliAction.privileged ? ['--privileged'] : [])
+        .concat(cliAction.index ? ['--index', cliAction.index] : [])
+        .concat(cliCommand);
+
+    if (program.verbose) {
+        console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
+    }
+
+    // Fire!
+    exitHandler(spawnSync('docker-compose', cliArgs, cliOptions).status);
 });
