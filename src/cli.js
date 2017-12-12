@@ -65,7 +65,7 @@ if (!packageConfig && !doprConfig) {
 }
 
 // Backward compat.
-if (typeof packageConfig.file === 'string') {
+if (packageConfig && typeof packageConfig.file === 'string') {
     packageConfig.file = [packageConfig.file];
 }
 if (doprConfig && typeof doprConfig.file === 'string') {
@@ -172,16 +172,15 @@ cliAction.command.forEach(command => {
         return exitHandler(spawnSync('dopr ', refArgs, cliOptions).status);
     }
 
-    // Command is expected to run in host context!
-    if (cliAction.service === '@host') {
-        return execSync(command, cliOptions);
-    }
-
     // Parse command
     const cliCommand = command
-        .replace('%action%', action || '')
-        .replace('%args%', args.join(' '))
-        .split(' ');
+        .replace(/%action%/g, action || '')
+        .replace(/%args%/g, args.join(' '));
+
+    // Command is expected to run in host context!
+    if (cliAction.service === '@host') {
+        return execSync(cliCommand, cliOptions);
+    }
 
     // Args
     const user = cliAction.user ? ['--user', cliAction.user] : [];
