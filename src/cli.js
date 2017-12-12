@@ -153,6 +153,11 @@ const exitHandler = code => {
     }
 };
 
+// Default args given!
+if (args.length === 0 && cliAction.args !== undefined) {
+    args.push(cliAction.args);
+}
+
 // Run commands synchronously one after another!
 cliAction.command.forEach(command => {
     if (program.verbose) {
