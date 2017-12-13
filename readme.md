@@ -91,6 +91,10 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
     "host-cmd": {
       "service": "@host",
       "command": "docker-compose version"
+    },
+    "composer": {
+      "args": "install --prefer-dist --no-scripts",
+      "command": "%action% %args%"
     }
   }
 }
@@ -100,6 +104,7 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 - The `"actions".[$key]."command"` can be either array or string.
 - The command can be reused or recalled by prefixing it with `@` (see sample above).
 - The command that should run in host context will need `"service"` value of `"@host"` (see sample above).
+- The action can optionally provide default arguments in `"args"` used to interpolate `%args%` when no other argument is provided (see `"composer"."args"` above).
 
 ## Usage
 
