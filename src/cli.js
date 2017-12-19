@@ -82,9 +82,9 @@ if (program.list) {
     console.log('Available actions:\n');
 
     Object.keys(config.actions).forEach(action => {
-        action = action.padEnd(16, ' ');
+        const comment = config.actions[action].comment || '';
 
-        console.log('  ' + action + ' ' + chalk.gray(config.actions[action].comment || ''));
+        console.log('  ' + action.padEnd(16, ' ') + chalk.gray(comment));
     });
 
     process.exit(0);
