@@ -32,6 +32,7 @@ program
     .option('-p, --privileged', 'Give extended privileges to the executed command process')
     .option('-v, --verbose', 'Adds additional logging')
     .option('-d, --detached', 'Detached mode: Run command in the background.')
+    .option('-l, --list', 'List the available actions that can be run as ' + chalk.gray('dopr <action>'))
     .parse(dockerProjectArgs);
 
 // Set defaults
@@ -76,6 +77,18 @@ if (doprConfig && typeof doprConfig.file === 'string') {
 const mergedConfig = deepAssign({}, defaultConfig, packageConfig, doprConfig);
 const environmentConfig = (mergedConfig.environments && mergedConfig.environments[env]) || {};
 const config = deepAssign({}, mergedConfig, environmentConfig);
+
+if (program.list) {
+    console.log('Available actions:\n');
+
+    Object.keys(config.actions).forEach(action => {
+        action = action.padEnd(16, ' ');
+
+        console.log('  ' + action + ' ' + chalk.gray(config.actions[action].comment || ''));
+    });
+
+    process.exit(0);
+}
 
 // Default action
 const defaultAction = {
