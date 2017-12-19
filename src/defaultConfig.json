@@ -4,36 +4,57 @@
   "exec": true,
   "actions": {
     "down": {
+      "comment": "Stop and destroy the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "up": {
+      "comment": "Bring the docker containers up and live",
       "command": "%action% %args%",
       "exec": false
     },
     "pull": {
+      "comment": "Pull the latest versions of docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "start": {
+      "comment": "Start the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "stop": {
+      "comment": "Stop the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
-    "bash": "%action% %args%",
-    "composer": "%action% %args%",
+    "bash": {
+      "comment": "Open the interactive terminal from default service container",
+      "command": "%action% %args%"
+    },
+    "composer": {
+      "comment": "Run the composer command in default service container",
+      "command": "%action% %args%"
+    },
     "node": {
+      "comment": "Run the node command in default service container",
       "command": "%action% %args%",
       "user": "node"
     },
     "npm": {
+      "comment": "Run the npm command in default service container",
       "command": "%action% %args%",
       "user": "node"
     },
-    "git": "%action% %args%",
-    "yarn": "%action% %args%"
+    "git": {
+      "comment": "Run the git command in default service container",
+      "command": "%action% %args%",
+      "user": "node"
+    },
+    "yarn": {
+      "comment": "Run the yarn command in default service container",
+      "command": "%action% %args%",
+      "user": "node"
+    }
   }
 }
