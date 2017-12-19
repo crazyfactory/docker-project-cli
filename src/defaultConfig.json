@@ -28,6 +28,11 @@
       "command": "%action% %args%",
       "exec": false
     },
+    "ip": {
+      "comment": "Print container IP address",
+      "service": "@host",
+      "command": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' %args%"
+    },
     "bash": {
       "comment": "Open the interactive terminal from default service container",
       "command": "%action% %args%"
