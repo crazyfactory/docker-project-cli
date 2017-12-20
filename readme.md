@@ -81,13 +81,11 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
     },
     "git": {
       "comment": "Run the git command in default service container",
-      "command": "%action% %args%",
-      "user": "node"
+      "command": "%action% %args%"
     },
     "yarn": {
       "comment": "Run the yarn command in default service container",
-      "command": "%action% %args%",
-      "user": "node"
+      "command": "%action% %args%"
     }
   }
 }
