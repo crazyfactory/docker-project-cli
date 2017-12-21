@@ -32,37 +32,61 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
   "exec": true,
   "actions": {
     "down": {
+      "comment": "Stop and destroy the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "up": {
+      "comment": "Bring the docker containers up and live",
       "command": "%action% %args%",
       "exec": false
     },
     "pull": {
+      "comment": "Pull the latest versions of docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "start": {
+      "comment": "Start the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
     "stop": {
+      "comment": "Stop the docker containers",
       "command": "%action% %args%",
       "exec": false
     },
-    "bash": "%action% %args%",
-    "composer": "%action% %args%",
+    "ip": {
+      "comment": "Print IP address of given container",
+      "service": "@host",
+      "command": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' %args%"
+    },
+    "bash": {
+      "comment": "Open the interactive terminal from default service container",
+      "command": "%action% %args%"
+    },
+    "composer": {
+      "comment": "Run the composer command in default service container",
+      "command": "%action% %args%"
+    },
     "node": {
+      "comment": "Run the node command in default service container",
       "command": "%action% %args%",
       "user": "node"
     },
     "npm": {
+      "comment": "Run the npm command in default service container",
       "command": "%action% %args%",
       "user": "node"
     },
-    "git": "%action% %args%",
-    "yarn": "%action% %args%"
+    "git": {
+      "comment": "Run the git command in default service container",
+      "command": "%action% %args%"
+    },
+    "yarn": {
+      "comment": "Run the yarn command in default service container",
+      "command": "%action% %args%"
+    }
   }
 }
 ```
@@ -73,6 +97,8 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 - The `node` will be launched with the user `node` by default.
 - This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
 - The `"file"` value can be array or string.
+- Use `dopr ip <container-name>` to print the IP address of container.
+- To change service container for above default actions simply extend the node with override `"service"` only.
 
 **Sample configuration with all usecases:**
 
