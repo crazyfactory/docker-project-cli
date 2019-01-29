@@ -102,10 +102,23 @@ function collect(val, memo) {
     return memo;
 }
 
+function ensureArray(arg) {
+    if (arg === undefined || arg === null || arg === '') {
+        return [];
+    }
+
+    if (!Array.isArray(arg)) {
+        return [arg];
+    }
+
+    return arg;
+}
+
 module.exports = {
     preprocessArgs,
     fileExists,
     parseConfigActions,
     parseConfig,
-    collect
+    collect,
+    ensureArray
 };
