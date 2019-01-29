@@ -66,8 +66,12 @@ if (!packageConfig && !doprConfig) {
 }
 
 // Backward compat.
-packageConfig.file = ensureArray(packageConfig.file);
-doprConfig.file = ensureArray(doprConfig.file);
+if (packageConfig) {
+    packageConfig.file = ensureArray(packageConfig.file);
+}
+if (doprConfig) {
+    doprConfig.file = ensureArray(doprConfig.file);
+}
 
 // Construct configuration
 const mergedConfig = deepAssign({}, defaultConfig, packageConfig, doprConfig);
