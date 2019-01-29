@@ -1,3 +1,9 @@
+## [v0.9.0] 2019-01-29 07:01:32 UTC
+
+- [4e24fdd](https://github.com/crazyfactory/docker-project-cli/commit/4e24fdd) test: ensureArray (Jitendra Adhikari)
+- [b5a6219](https://github.com/crazyfactory/docker-project-cli/commit/b5a6219) feat(cli): use ensureArray instead (Jitendra Adhikari)
+- [181ac33](https://github.com/crazyfactory/docker-project-cli/commit/181ac33) feat(internals): add ensureArray (Jitendra Adhikari)
+
 ## [v0.8.0] 2019-01-29 05:01:38 UTC
 
 - [399fe74](https://github.com/crazyfactory/docker-project-cli/commit/399fe74) chore(package): update lockfile package-lock.json (greenkeeper[bot])
@@ -18,4 +24,3 @@
 - [669e641](https://github.com/crazyfactory/docker-project-cli/commit/669e641) refactor: add comment for --list (Jitendra Adhikari)
 - [7142032](https://github.com/crazyfactory/docker-project-cli/commit/7142032) feat(list): support dopr --list (Jitendra Adhikari)
 - [764f7c2](https://github.com/crazyfactory/docker-project-cli/commit/764f7c2) feat(list): support dopr --list (Jitendra Adhikari)
-
