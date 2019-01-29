@@ -1,3 +1,7 @@
+## [v0.9.1] 2019-01-29 07:01:18 UTC
+
+- [64fef51](https://github.com/crazyfactory/docker-project-cli/commit/64fef51) fix: only update file prop if main object exists (Jitendra Adhikari)
+
 ## [v0.9.0] 2019-01-29 07:01:32 UTC
 
 - [4e24fdd](https://github.com/crazyfactory/docker-project-cli/commit/4e24fdd) test: ensureArray (Jitendra Adhikari)
