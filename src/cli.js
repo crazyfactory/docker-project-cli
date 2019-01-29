@@ -8,7 +8,7 @@ const deepAssign = require('deep-assign');
 const updateNotifier = require('update-notifier');
 
 const pkg = require('../package.json');
-const {preprocessArgs, fileExists, parseConfig, collect} = require('./internals');
+const {preprocessArgs, fileExists, parseConfig, collect, ensureArray} = require('./internals');
 
 const defaultConfig = parseConfig(require('./defaultConfig.json'));
 
@@ -66,12 +66,8 @@ if (!packageConfig && !doprConfig) {
 }
 
 // Backward compat.
-if (packageConfig && typeof packageConfig.file === 'string') {
-    packageConfig.file = [packageConfig.file];
-}
-if (doprConfig && typeof doprConfig.file === 'string') {
-    doprConfig.file = [doprConfig.file];
-}
+packageConfig.file = ensureArray(packageConfig.file);
+doprConfig.file = ensureArray(doprConfig.file);
 
 // Construct configuration
 const mergedConfig = deepAssign({}, defaultConfig, packageConfig, doprConfig);
@@ -116,14 +112,18 @@ const configAction = (config.actions && config.actions[action]) || {};
 const cliAction = Object.assign({}, defaultAction, configAction, programAction);
 
 // Validation
-if (cliAction.file.length === 0) {
+if (!cliAction.file || cliAction.file.length === 0) {
     console.log(chalk.red('\'file\' not configured.'));
     process.exit(1);
 }
+
 if (cliAction.exec && !cliAction.service) {
     console.log(chalk.red('\'service\' not configured.'));
     process.exit(1);
 }
+
+cliAction.file = ensureArray(cliAction.file);
+cliAction.command = ensureArray(cliAction.command);
 
 const dockerComposeFiles = [];
 
@@ -143,11 +143,6 @@ cliAction.file.forEach((file, pos) => {
 
     dockerComposeFiles.push('--file', file);
 });
-
-// Supporting array command so treat anything else as array as well.
-if (typeof cliAction.command === 'string') {
-    cliAction.command = [cliAction.command];
-}
 
 const cliOptions = {
     cwd: basePath,
