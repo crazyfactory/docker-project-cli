@@ -141,12 +141,19 @@ cliAction.file.forEach((file, pos) => {
     }
 
     if (!fileExists(file)) {
-        console.log(chalk.red('docker-compose file not found at: ' + file));
-        process.exit(1);
+        console.log(chalk.yellow('docker-compose file not found at: ' + file));
+
+        return;
     }
 
     dockerComposeFiles.push('--file', file);
 });
+
+if (dockerComposeFiles.length === 0) {
+    console.log(chalk.red('at least one docker-compose file is required to exist'));
+
+    process.exit(1);
+}
 
 const cliOptions = {
     cwd: basePath,
