@@ -1,3 +1,7 @@
+## [v0.9.2] 2019-03-29 01:03:43 UTC
+
+- [24fcb64](https://github.com/crazyfactory/docker-project-cli/commit/24fcb64) fix: donot exit immediately on file not found (Jitendra Adhikari)
+
 ## [v0.9.1] 2019-01-29 07:01:18 UTC
 
 - [64fef51](https://github.com/crazyfactory/docker-project-cli/commit/64fef51) fix: only update file prop if main object exists (Jitendra Adhikari)
