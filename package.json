@@ -33,7 +33,7 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "babel-preset-env": "^1.5.2",
-    "husky": "^1.0.0",
+    "husky": "^2.0.0",
     "semantic-release": "^15.0.0",
     "validate-commit-msg": "^2.12.2",
     "xo": "^0.18.2"
