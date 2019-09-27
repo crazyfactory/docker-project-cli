@@ -33,59 +33,59 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
   "actions": {
     "down": {
       "comment": "Stop and destroy the docker containers",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "exec": false
     },
     "up": {
       "comment": "Bring the docker containers up and live",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "exec": false
     },
     "pull": {
       "comment": "Pull the latest versions of docker containers",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "exec": false
     },
     "start": {
       "comment": "Start the docker containers",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "exec": false
     },
     "stop": {
       "comment": "Stop the docker containers",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "exec": false
     },
     "ip": {
-      "comment": "Print IP address of given container",
+      "comment": "Print container IP address",
       "service": "@host",
-      "command": "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' %args%"
+      "command": ["docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' %args%"]
     },
     "bash": {
       "comment": "Open the interactive terminal from default service container",
-      "command": "%action% %args%"
+      "command": ["%action% %args%"]
     },
     "composer": {
       "comment": "Run the composer command in default service container",
-      "command": "%action% %args%"
+      "command": ["%action% %args%"]
     },
     "node": {
       "comment": "Run the node command in default service container",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "user": "node"
     },
     "npm": {
       "comment": "Run the npm command in default service container",
-      "command": "%action% %args%",
+      "command": ["%action% %args%"],
       "user": "node"
     },
     "git": {
       "comment": "Run the git command in default service container",
-      "command": "%action% %args%"
+      "command": ["%action% %args%"]
     },
     "yarn": {
       "comment": "Run the yarn command in default service container",
-      "command": "%action% %args%"
+      "command": ["%action% %args%"]
     }
   }
 }
