@@ -1,3 +1,14 @@
+## [v0.9.3](https://github.com/crazyfactory/docker-project-cli/releases/tag/v0.9.3) (2019-09-27)
+
+### Documentations
+- Update default config (Jitendra Adhikari) [_9f795b8_](https://github.com/crazyfactory/docker-project-cli/commit/9f795b8)
+
+### Miscellaneous
+- Update default config command to be array (Jitendra Adhikari) [_ee584f3_](https://github.com/crazyfactory/docker-project-cli/commit/ee584f3)
+- **Package**: Update lockfile package-lock.json (greenkeeper[bot]) [_4fadd7d_](https://github.com/crazyfactory/docker-project-cli/commit/4fadd7d)
+- **Package**: Update ava to version 2.3.0 (greenkeeper[bot]) [_62882ac_](https://github.com/crazyfactory/docker-project-cli/commit/62882ac)
+
+
 ## [v0.9.2] 2019-03-29 01:03:43 UTC
 
 - [24fcb64](https://github.com/crazyfactory/docker-project-cli/commit/24fcb64) fix: donot exit immediately on file not found (Jitendra Adhikari)
