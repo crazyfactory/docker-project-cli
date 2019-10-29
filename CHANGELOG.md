@@ -1,3 +1,9 @@
+## [v0.9.4](https://github.com/crazyfactory/docker-project-cli/releases/tag/v0.9.4) (2019-10-29)
+
+### Miscellaneous
+- Update deps (Jitendra Adhikari) [_2f872e5_](https://github.com/crazyfactory/docker-project-cli/commit/2f872e5)
+
+
 ## [v0.9.3](https://github.com/crazyfactory/docker-project-cli/releases/tag/v0.9.3) (2019-09-27)
 
 ### Documentations
