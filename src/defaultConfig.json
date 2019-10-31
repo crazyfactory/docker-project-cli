@@ -58,6 +58,10 @@
     "yarn": {
       "comment": "Run the yarn command in default service container",
       "command": ["%action% %args%"]
+    },
+    "php": {
+      "comment": "Run the php command in default service container",
+      "command": ["%action% %args%"]
     }
   }
 }
