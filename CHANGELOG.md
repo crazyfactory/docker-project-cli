@@ -1,3 +1,15 @@
+## [v0.9.5](https://github.com/crazyfactory/docker-project-cli/releases/tag/v0.9.5) (2019-10-31)
+
+### Bug Fixes
+- Use default command as array (Jitendra Adhikari) [_0d96dfd_](https://github.com/crazyfactory/docker-project-cli/commit/0d96dfd)
+
+### Miscellaneous
+- Add php command (Jitendra Adhikari) [_b113ce4_](https://github.com/crazyfactory/docker-project-cli/commit/b113ce4)
+
+### Documentations
+- Rename readme -> README, add php in defaults (Jitendra Adhikari) [_c10ad6b_](https://github.com/crazyfactory/docker-project-cli/commit/c10ad6b)
+
+
 ## [v0.9.4](https://github.com/crazyfactory/docker-project-cli/releases/tag/v0.9.4) (2019-10-29)
 
 ### Miscellaneous
