@@ -86,6 +86,10 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
     "yarn": {
       "comment": "Run the yarn command in default service container",
       "command": ["%action% %args%"]
+    },
+    "php": {
+      "comment": "Run the php command in default service container",
+      "command": ["%action% %args%"]
     }
   }
 }
