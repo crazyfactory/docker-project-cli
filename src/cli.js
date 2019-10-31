@@ -94,7 +94,7 @@ if (program.list) {
 const defaultAction = {
     file: config.file || null,
     service: config.service || null,
-    command: config.command || '%action% %args%',
+    command: config.command || ['%action% %args%'],
     user: config.user || null,
     privileged: config.privileged || false,
     exec: true,
