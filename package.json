@@ -28,7 +28,7 @@
     "commander": "^3.0.0",
     "deep-assign": "^3.0.0",
     "fallback-cli": "^2.0.2",
-    "update-notifier": "^3.0.0"
+    "update-notifier": "^4.0.0"
   },
   "devDependencies": {
     "ava": "^2.3.0",
