@@ -217,9 +217,9 @@ cliAction.command.forEach(command => {
         .concat(cliCommand);
 
     if (program.verbose) {
-        console.log(chalk.gray('CMD: docker-compose ' + cliArgs.join(' ')));
+        console.log(chalk.gray('CMD: docker compose ' + cliArgs.join(' ')));
     }
 
     // Fire!
-    exitHandler(spawnSync('docker-compose', cliArgs, cliOptions).status);
+    exitHandler(spawnSync('docker compose', cliArgs, cliOptions).status);
 });
