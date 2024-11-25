@@ -96,7 +96,7 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 ```
 
 *Notes:*
-- This will relay `up`, `down`, `start` and `stop` to `docker-compose -f <file> $params$`
+- This will relay `up`, `down`, `start` and `stop` to `docker compose -f <file> $params$`
 - This will add custom commands like `dopr bash ...`, `dopr composer ...` and `dopr optimize`
 - The `node` will be launched with the user `node` by default.
 - This will use a different config if NODE_ENV is set to *production* or if dopr is with `--env production`.
@@ -120,7 +120,7 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
     },
     "host-cmd": {
       "service": "@host",
-      "command": "docker-compose version"
+      "command": "docker compose version"
     },
     "composer": {
       "args": "install --prefer-dist --no-scripts",
@@ -139,13 +139,13 @@ Configuration of DOPR can be done either via `package.json` under the `dopr` key
 ## Usage
 
 ### docker-compose shortcuts
-`dopr` will choose the correct docker-compose file for you and relay some of the most basic commands directly to docker-compose.
+`dopr` will choose the correct docker-compose file for you and relay some of the most basic commands directly to docker compose.
 
 To start you project in deamon mode run
 
     $ dopr up -d
 
-You can similarly use `down` and `stop`, just like you would with `docker-compose` directly.
+You can similarly use `down` and `stop`, just like you would with `docker compose` directly.
 
 ### custom commands
 
