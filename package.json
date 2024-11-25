@@ -34,7 +34,7 @@
     "ava": "^2.3.0",
     "babel-preset-env": "^1.5.2",
     "husky": "^3.0.0",
-    "semantic-release": "^15.0.0",
+    "semantic-release": "^17.2.3",
     "validate-commit-msg": "^2.12.2",
     "xo": "^0.18.2"
   },
